@@ -1,8 +1,6 @@
----
 mode: 'agent'
 model: GPT-4.1
 description: 'Create a Django project, start it, and run it'
----
 
 Your task is to create the Django project in octofit-tracker/backend/octofit_tracker directory using the Python
 virtual environment we already created in directory octofit-tracker/backend/venv which contains all the prerequisites.
