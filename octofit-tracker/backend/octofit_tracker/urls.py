@@ -17,7 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from octofit_tracker.views import TeamViewSet, UserViewSet, ActivityViewSet, WorkoutViewSet, LeaderboardViewSet
+
 
 router = routers.DefaultRouter()
 router.register(r'teams', TeamViewSet)
@@ -26,7 +29,24 @@ router.register(r'activities', ActivityViewSet)
 router.register(r'workouts', WorkoutViewSet)
 router.register(r'leaderboards', LeaderboardViewSet)
 
+
+
+
+# Custom /api/ root endpoint that lists possible API paths
+@api_view(["GET"])
+def api_paths(request):
+    paths = {
+        "users": "/api/users/",
+        "teams": "/api/teams/",
+        "activities": "/api/activities/",
+        "workouts": "/api/workouts/",
+        "leaderboards": "/api/leaderboards/"
+    }
+    return Response({"available_api_paths": paths})
+
 urlpatterns = [
+    path('', lambda request: Response({"status": "ok", "message": "Octofit Tracker API root. See /api/ for endpoints."}), name='root-ok'),
     path('admin/', admin.site.urls),
+    path('api/', api_paths, name='api-paths'),
     path('api/', include(router.urls)),
 ]
